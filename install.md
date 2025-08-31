@@ -4,7 +4,7 @@
 
 1. **Copy the plugin folder** to your Obsidian vault's plugins directory:
    ```
-   cp -r /Users/antonio/Dropbox/Code/Obsidian/obsidian-auto-resize-images "/Users/antonio/Library/Mobile Documents/iCloud~md~obsidian/Documents/My Vault/.obsidian/plugins"
+   cp -r /path/to/obsidian-auto-resize-images /path/to/My Vault/.obsidian/plugins"
    ```
 
 2. **Enable the plugin** in Obsidian:
