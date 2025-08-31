@@ -1,0 +1,10 @@
+{
+  "id": "auto-resize-images",
+  "name": "Auto Resize Images",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Automatically resizes linked images by adding |150 to image links",
+  "author": "Your Name",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
