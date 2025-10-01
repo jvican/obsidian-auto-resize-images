@@ -94,19 +94,31 @@ export default class AutoResizeImagesPlugin extends Plugin {
 
 	// Function to resize images in content
 	resizeImagesInContent(content: string): string {
-		// Regex to match image links: ![[filename.jpg]] or ![[filename.png]] etc.
-		// This will match image links that don't already have a size specification
-		const imageRegex = /!\[\[([^\]]+\.(?:jpg|jpeg|png|gif|webp|svg))\]\]/g;
-		
-		return content.replace(imageRegex, (match, filename) => {
-			// Check if the image already has a size specification
-			if (filename.includes('|')) {
-				return match; // Don't modify if already has size
-			}
-			
+		// Regex to match wiki-style image links: ![[filename.jpg]] or ![[filename.jpg|size]]
+		const wikiImageRegex = /!\[\[([^\]]+\.(?:jpg|jpeg|png|gif|webp|svg))(?:\|[^\]]+)?\]\]/g;
+
+		// Regex to match markdown-style image links: ![alt](path) or ![alt|size](path)
+		const mdImageRegex = /!\[([^\]]*)\]\(([^)]+\.(?:jpg|jpeg|png|gif|webp|svg))\)/g;
+
+		// Process wiki-style links
+		let newContent = content.replace(wikiImageRegex, (match, filename) => {
+			// Remove any existing size specification from filename
+			const cleanFilename = filename.split('|')[0];
+
 			// Add the size specification
-			return `![[${filename}|${this.settings.imageWidth}]]`;
+			return `![[${cleanFilename}|${this.settings.imageWidth}]]`;
 		});
+
+		// Process markdown-style links
+		newContent = newContent.replace(mdImageRegex, (match, alt, path) => {
+			// Remove any existing size specification from alt text
+			const cleanAlt = alt.split('|')[0];
+
+			// Add the size specification to alt text
+			return `![${cleanAlt}|${this.settings.imageWidth}](${path})`;
+		});
+
+		return newContent;
 	}
 }
 
