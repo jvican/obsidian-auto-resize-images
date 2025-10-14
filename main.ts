@@ -23,26 +23,8 @@ export default class AutoResizeImagesPlugin extends Plugin {
 			}
 		});
 
-		// Add command to resize images in all files
-		this.addCommand({
-			id: 'resize-images-in-all-files',
-			name: 'Resize images in all files',
-			callback: () => {
-				this.resizeImagesInAllFiles();
-			}
-		});
-
 		// Add settings tab
 		this.addSettingTab(new AutoResizeImagesSettingTab(this.app, this));
-
-		// Auto-resize images when files are opened
-		this.registerEvent(
-			this.app.workspace.on('file-open', (file) => {
-				if (file && file.extension === 'md') {
-					this.autoResizeImagesInFile(file);
-				}
-			})
-		);
 
 		console.log('Auto Resize Images plugin loaded');
 	}
@@ -63,32 +45,9 @@ export default class AutoResizeImagesPlugin extends Plugin {
 	resizeImagesInEditor(editor: Editor) {
 		const content = editor.getValue();
 		const newContent = this.resizeImagesInContent(content);
-		
+
 		if (content !== newContent) {
 			editor.setValue(newContent);
-		}
-	}
-
-	// Function to resize images in all markdown files
-	async resizeImagesInAllFiles() {
-		const files = this.app.vault.getMarkdownFiles();
-		
-		for (const file of files) {
-			await this.autoResizeImagesInFile(file);
-		}
-	}
-
-	// Function to auto-resize images in a specific file
-	async autoResizeImagesInFile(file: any) {
-		try {
-			const content = await this.app.vault.read(file);
-			const newContent = this.resizeImagesInContent(content);
-			
-			if (content !== newContent) {
-				await this.app.vault.modify(file, newContent);
-			}
-		} catch (error) {
-			console.error(`Error processing file ${file.path}:`, error);
 		}
 	}
 
