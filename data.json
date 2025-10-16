@@ -1,3 +1,4 @@
 {
-  "imageWidth": 600
+  "imageWidth": 600,
+  "resizeUrlWidthParams": true
 }
